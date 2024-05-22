@@ -1,4 +1,5 @@
 library(tidyverse)
+library(ggsignif)
 library(patchwork)
 library(grid)
 library(png)
@@ -152,7 +153,7 @@ fig_b <- ggplot(Ct_dfe, aes(x = Network, y = F1, fill = Metric)) +
   theme(legend.position = 'bottom')
 
 # Perform ANOVA
-anova_model <- aov(F1 ~ Network, data = Ct_dfe)
+anova_model <- aov(F1 ~ Network, data = filter(Ct_dfe, Metric == "Subclass"))
 anova_summary <- summary(anova_model)
 
 # Perform Tukey's HSD test
@@ -189,8 +190,20 @@ fig_b <- fig_b +
 combined_plot <- fig_a + fig_b + plot_annotation(tag_levels = 'A')
 combined_plot
 
-ggsave('/home/sam/scRNAseq/Xenium/NeurIPS/NeurIPS_Fig3.pdf', combined_plot, device = "pdf", width = 9, height = 5)
+combined_plot
 
+
+ggsave('/home/sam/scRNAseq/Xenium/NeurIPS/NeurIPS_Fig3.pdf', combined_plot, device = "pdf", width = 8, height = 4)
+
+
+anova_model <- aov(F1 ~ Network, data = filter(Ct_dfe, Metric == "Class"))
+anova_summary <- summary(anova_model)
+
+# Perform Tukey's HSD test
+tukey_result <- TukeyHSD(anova_model)
+
+# Extract the pairwise comparisons and p-values
+tukey_df <- as.data.frame(tukey_result$Network)
 
 ##########################################################################################################
 

@@ -68,7 +68,7 @@ Useage Note: multiple seeds {18, 36,54,72, 90} were set manually to run R script
 
 #### Figure 5A:
 
-/Analysis/gradient_graph.R
+/AnalysisAUCPR_supFIg.R
 
 #### Figure 6A:
 
